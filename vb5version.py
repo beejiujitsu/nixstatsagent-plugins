@@ -29,7 +29,7 @@ def current() -> str:
     return "-1"
 
 
-def latest()) -> str:
+def latest() -> str:
     f = requests.get("https://www.vbulletin.com/download.php")
     myre = re.compile(r"(5\.\d+\.\d+)")
     for line in f.text.splitlines():
