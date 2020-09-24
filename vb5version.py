@@ -15,7 +15,11 @@ class Plugin(plugins.BasePlugin):
         using_latest = str(int(_current == _latest))
         return {"current": _current, "latest": _latest, "using_latest": using_latest}
 
-    def current(self) -> str:
+    def to_float(self, version: str) -> str:
+        parts = version.split(".")
+        return "%s.%s%s" % (parts[0], parts[1], parts[2])
+
+    def current() -> str:
         with open("/var/www/html/index.php") as fh:
             for line in fh.readlines():
                 if "vBulletin 5" in line:
@@ -31,11 +35,6 @@ class Plugin(plugins.BasePlugin):
                 if matched:
                     return matched.group(0)
         return "-1"
-
-
-def to_float(version: str) -> str:
-    parts = version.split(".")
-    return "%s.%s%s" % (parts[0], parts[1], parts[2])
 
 
 if __name__ == "__main__":
