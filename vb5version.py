@@ -10,8 +10,8 @@ class Plugin(plugins.BasePlugin):
     __name__ = "vb5version"
 
     def run(self, *_) -> Dict[str, str]:
-        _current = self.to_float(current())
-        _latest = self.to_float(latest())
+        _current = self.to_float(self.current())
+        _latest = self.to_float(self.latest())
         using_latest = str(int(_current == _latest))
         return {"current": _current, "latest": _latest, "using_latest": using_latest}
 
@@ -19,7 +19,7 @@ class Plugin(plugins.BasePlugin):
         parts = version.split(".")
         return "%s.%s%s" % (parts[0], parts[1], parts[2])
 
-    def current() -> str:
+    def current(self) -> str:
         with open("/var/www/html/index.php") as fh:
             for line in fh.readlines():
                 if "vBulletin 5" in line:
