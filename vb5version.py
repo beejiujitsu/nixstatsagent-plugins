@@ -2,7 +2,7 @@
 import re
 from typing import Dict
 
-import plugins
+from nixstatsagent import plugins
 import requests
 
 
