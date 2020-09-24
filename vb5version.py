@@ -1,37 +1,36 @@
 #!/usr/bin/env python
-import plugins
 import re
-import requests
-
 from typing import Dict
+
+import plugins
+import requests
 
 
 class Plugin(plugins.BasePlugin):
     __name__ = "vb5version"
 
     def run(self, *_) -> Dict[str, str]:
-        _current = to_float(current())
-        _latest = to_float(latest())
+        _current = self.to_float(current())
+        _latest = self.to_float(latest())
         using_latest = str(int(_current == _latest))
-        results = {"current": _current, "latest": _latest, "using_latest": using_latest}
-        return results
+        return {"current": _current, "latest": _latest, "using_latest": using_latest}
 
-def current() -> str:
-    with open("/var/www/html/index.php") as fh:
-        for line in fh.readlines():
-            if "vBulletin 5" in line:
-                return line.split()[3]
-    return "-1"
+    def current(self) -> str:
+        with open("/var/www/html/index.php") as fh:
+            for line in fh.readlines():
+                if "vBulletin 5" in line:
+                    return line.split()[3]
+        return "-1"
 
-
-def latest() -> str:
-    f = requests.get("https://www.vbulletin.com/download.php")
-    myre = re.compile(r"(5\.\d+\.\d+)")
-    for line in f.text.splitlines():
-        if "Latest Version:" in line:
-            matched = myre.search(line)
-            if matched:
-                return matched.group(0)
+    def latest(self) -> str:
+        f = requests.get("https://www.vbulletin.com/download.php")
+        myre = re.compile(r"(5\.\d+\.\d+)")
+        for line in f.text.splitlines():
+            if "Latest Version:" in line:
+                matched = myre.search(line)
+                if matched:
+                    return matched.group(0)
+        return "-1"
 
 
 def to_float(version: str) -> str:
