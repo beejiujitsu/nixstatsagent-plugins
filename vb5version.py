@@ -18,7 +18,10 @@ class Plugin(plugins.BasePlugin):
 
 def to_float(version: str) -> str:
     parts = version.split(".")
-    return "%s.%s%s" % (parts[0], parts[1], parts[2])
+    try:
+        return "%s.%s%s" % (parts[0], parts[1], parts[2])
+    except IndexError:
+        return version
 
 
 def current() -> str:
