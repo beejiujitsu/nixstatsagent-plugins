@@ -20,7 +20,7 @@ class Plugin(plugins.BasePlugin):
         try:
             split = version.split(".")
             return f"{split[0]}.{split[1]}{split[2]}"
-        except ValueError, TypeError:
+        except (ValueError, TypeError):
             return version
 
     def using_latest(self, _current, _latest) -> str:
