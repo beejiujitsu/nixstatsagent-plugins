@@ -20,7 +20,7 @@ class Plugin(plugins.BasePlugin):
         try:
             split = version.split(".")
             return f"{split[0]}.{split[1]}{split[2]}"
-        except Exception:
+        except ValueError, TypeError:
             return version
 
     def using_latest(self, _current, _latest) -> str:
@@ -45,7 +45,7 @@ class Plugin(plugins.BasePlugin):
                 if match:
                     return match.group(0)
             if "vbulletin" in line.lower() and "security patch" in line.lower():
-                match = prog.search(line) 
+                match = prog.search(line)
                 sec_match = sec.search(line)
                 if match and sec_match:
                     return match.group(0) + sec_match.group(0)
