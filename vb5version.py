@@ -17,10 +17,10 @@ class Plugin(plugins.BasePlugin):
         return {"current": _current, "latest": _latest, "using_latest": using_latest}
 
     def to_float(self, version: str) -> str:
-        parts = version.split(".")
         try:
+            parts = version.split(".")
             return "%s.%s%s" % (parts[0], parts[1], parts[2])
-        except IndexError:
+        except Exception:
             return version
 
     def current(self) -> str:
@@ -33,8 +33,9 @@ class Plugin(plugins.BasePlugin):
         myre = re.compile(r"(5\.\d+\.\d+)")
         for line in requests.get("https://www.vbulletin.com/download.php").text.splitlines():
             if "Latest Version:" in line:
-                with suppress(NoneType):
-                    return myre.search(line).group(0)
+                match = myre.search(line)
+                if match:
+                    return match.group(0)
 
 
 if __name__ == "__main__":
