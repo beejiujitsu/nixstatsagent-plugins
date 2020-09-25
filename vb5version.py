@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+from contextlib import suppress
 import re
 from typing import Dict
 
@@ -29,13 +30,11 @@ class Plugin(plugins.BasePlugin):
                     return line.split()[3]
 
     def latest(self) -> str:
-        f = requests.get("https://www.vbulletin.com/download.php")
         myre = re.compile(r"(5\.\d+\.\d+)")
-        for line in f.text.splitlines():
+        for line in requests.get("https://www.vbulletin.com/download.php").text.splitlines():
             if "Latest Version:" in line:
-                matched = myre.search(line)
-                if matched:
-                    return matched.group(0)
+                with suppress(NoneType):
+                    return myre.search(line).group(0)
 
 
 if __name__ == "__main__":
