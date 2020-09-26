@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-from contextlib import suppress
 import re
 from typing import Dict, List
 
