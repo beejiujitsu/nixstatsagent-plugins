@@ -1,7 +1,6 @@
 #!/usr/bin/env python
-from contextlib import suppress
 import re
-from typing import Dict, List
+from typing import Dict
 
 import plugins
 import requests
