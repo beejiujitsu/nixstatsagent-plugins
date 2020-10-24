@@ -46,7 +46,9 @@ class Plugin(plugins.BasePlugin):
         base = re.compile(r"(5\.\d+\.\d+)")
         sec = re.compile(r"(?<=Security Patch Level )(\d+)")
         for line in requests.get(self.latest_uri).text.splitlines():
-            if "vbulletin connect" in line.lower():
+            if "vbulletin connect" in line.lower() or all([
+                "vbulletin" in line.lower(), "security patch" not in line.lower()
+            ]):
                 match = base.search(line)
                 if match:
                     return match.group(0)
